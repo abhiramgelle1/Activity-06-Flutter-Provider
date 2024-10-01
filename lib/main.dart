@@ -51,6 +51,24 @@ class Counter with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // Get background color based on the counter value
+  Color getBackgroundColor() {
+    if (value <= 12) return Colors.lightBlueAccent;
+    if (value <= 19) return Colors.lightGreenAccent;
+    if (value <= 30) return Colors.yellowAccent;
+    if (value <= 50) return Colors.orangeAccent;
+    return Colors.grey;
+  }
+
+  // Get milestone message based on the counter value
+  String getMilestoneMessage() {
+    if (value <= 12) return "You're a child!";
+    if (value <= 19) return "Teenager time!";
+    if (value <= 30) return "You're a young adult!";
+    if (value <= 50) return "You're an adult now!";
+    return "Golden years!";
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -78,18 +96,27 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Flutter Demo Home Page'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Consumer<Counter>(
-              builder: (context, counter, child) => Text(
-                '${counter.value}',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
+      body: Consumer<Counter>(
+        builder: (context, counter, child) => Container(
+          color: counter
+              .getBackgroundColor(), // Set background color based on the counter value
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('You have pushed the button this many times:'),
+                Text(
+                  '${counter.value}',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                Text(
+                  counter
+                      .getMilestoneMessage(), // Display milestone message based on the counter value
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
       floatingActionButton: Row(
